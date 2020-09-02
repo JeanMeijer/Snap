@@ -1,7 +1,7 @@
 
 import SwiftUI
 
-let handleVerticalPadding: CGFloat = 16
+let handleVerticalPadding: CGFloat = 6
 let handleThickness: CGFloat = 5
 
 public struct SnapDrawer<StateType: SnapState, Background : View, Content: View> : View {
@@ -64,7 +64,7 @@ public struct SnapDrawer<StateType: SnapState, Background : View, Content: View>
         }
         .frame(height: UIScreen.main.bounds.height)
         .clipShape(RoundedRectangle(cornerRadius: 20))
-        .shadow(color: Color(.sRGBLinear, white: 0, opacity: 0.9), radius: 10.0)
+        .shadow(color: Color(.displayP3, white: 0, opacity: 0.05), radius: 25.0)
         .offset(y: min(maxDrag + 8, max(minDrag - 8, self.currentResult.offset + self.dragState.translation.height)))
         .animation(self.dragState.isDragging ? nil : .interpolatingSpring(stiffness: 300.0, damping: 30.0, initialVelocity: 10.0))
         .gesture(drag)
@@ -78,8 +78,8 @@ public struct SnapDrawer<StateType: SnapState, Background : View, Content: View>
 struct Handle : View {
     var body: some View {
         RoundedRectangle(cornerRadius: handleThickness / 2.0)
-            .frame(width: 40, height: handleThickness)
-            .foregroundColor(Color.secondary)
+            .frame(width: 35, height: handleThickness)
+            .foregroundColor(Color(UIColor.systemFill))
             .padding(.vertical, handleVerticalPadding)
     }
 }
@@ -104,5 +104,11 @@ enum DragState {
         case .dragging:
             return true
         }
+    }
+}
+
+struct SnapDrawer_Previews: PreviewProvider {
+    static var previews: some View {
+        SnapDrawer(large: .paddingToTop(24), medium: .fraction(0.4), tiny: .height(100), allowInvisible: false) { state in }
     }
 }
