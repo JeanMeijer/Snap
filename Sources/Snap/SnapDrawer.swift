@@ -57,7 +57,7 @@ public struct SnapDrawer<StateType: SnapState, Background : View, Content: View>
 
             VStack(spacing: 0) {
                 currentResult.state.visible != nil ? Handle() : nil
-                currentResult.state.visible.map { content($0).frame(height: currentResult.contentHeight) }
+                currentResult.state.visible.map { content($0).frame(height: currentResult.contentHeight + 2 * handleVerticalPadding + handleThickness) }
                 
                 Spacer()
             }
@@ -107,8 +107,19 @@ enum DragState {
     }
 }
 
+struct ContentView: View {
+    var body: some View {
+        SnapDrawer(large: .paddingToTop(24), medium: .fraction(0.4), tiny: .height(100), allowInvisible: false) { state in
+            Rectangle()
+                .foregroundColor(.red)
+                .frame(minHeight: 0, maxHeight: .infinity, alignment: .top)
+            
+        }
+    }
+}
+
 struct SnapDrawer_Previews: PreviewProvider {
     static var previews: some View {
-        SnapDrawer(large: .paddingToTop(24), medium: .fraction(0.4), tiny: .height(100), allowInvisible: false) { state in }
+        ContentView()
     }
 }
